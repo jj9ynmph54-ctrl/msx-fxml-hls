@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MSX FXML HLS Test</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:720px;margin:40px auto;padding:0 16px}
+input,button{width:100%;box-sizing:border-box;padding:12px;margin:6px 0}
+button{cursor:pointer} pre{white-space:pre-wrap;word-break:break-all;background:#eee;padding:12px}
+</style>
+</head>
+<body>
+<h2>MSX / FXML HLS Test</h2>
+<p>Въведи директен HLS (.m3u8) адрес, който имаш право да използваш.</p>
+<input id="url" placeholder="https://example.com/video/master.m3u8">
+<input id="title" value="Test video">
+<button onclick="generate()">Generate FXML</button>
+<pre id="out">Тук ще се появи FXML.</pre>
+<script>
+function esc(s){
+ return s.replaceAll('&','&amp;').replaceAll('<','&lt;')
+  .replaceAll('>','&gt;').replaceAll('"','&quot;');
+}
+function generate(){
+ const u=document.getElementById('url').value.trim();
+ const t=document.getElementById('title').value.trim() || 'Test video';
+ if(!/^https?:\/\/.+\.m3u8(?:\?|$)/i.test(u)){
+  document.getElementById('out').textContent='Моля, въведи директен .m3u8 URL.';
+  return;
+ }
+ const xml='<?xml version="1.0" encoding="UTF-8"?>\n'
+  +'<items>\n<item type="video" name="'+esc(t)+'" url="'+esc(u)+'" />\n</items>';
+ document.getElementById('out').textContent=xml;
+}
+</script>
+</body>
+</html>
